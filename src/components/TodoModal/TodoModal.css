@@ -1,0 +1,303 @@
+/* TodoModal.css */
+
+/* 1. 全屏遮罩：毛玻璃效果 */
+.ModalOverlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: rgba(0, 0, 0, 0.3); /* 深色半透明背景 */
+  backdrop-filter: blur(10px); /* 关键：背景模糊 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+/* 2. 弹窗主体 */
+.ModalContent {
+  background: white;
+  width: 500px;
+  max-width: 90%;
+  max-height: 85vh;
+  border-radius: 28px;
+  padding: 30px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* 防止圆角被内容撑破 */
+  animation: popUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes popUp {
+  from { transform: scale(0.95); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* 3. 头部：日期标题和关闭按钮 */
+.ModalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.ModalHeader h3 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 800;
+  color: #1a1a1a;
+}
+
+.CloseBtn {
+  background: #f1f3f5;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  font-size: 20px;
+  color: #666;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.2s;
+}
+
+.CloseBtn:hover {
+  background: #e9ecef;
+  color: #000;
+}
+
+/* 4. 输入框组 (你的截图这里最乱，重点修这里) */
+.ModalInputGroup {
+  display: flex;
+  flex-direction: column; /* 让输入框竖着排列 */
+  gap: 12px; /* 输入框之间的间距 */
+  margin-bottom: 30px;
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 20px;
+}
+
+.ModalInputGroup input, 
+.ModalInputGroup textarea {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid transparent;
+  background: white;
+  border-radius: 12px;
+  font-size: 15px;
+  outline: none;
+  font-family: inherit;
+  transition: 0.2s;
+  box-sizing: border-box; /* 关键：防止padding撑大 */
+}
+
+.ModalInputGroup input:focus, 
+.ModalInputGroup textarea:focus {
+  border-color: #007AFF;
+  box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+}
+
+.ModalInputGroup textarea {
+  min-height: 80px;
+  resize: none;
+}
+
+.ModalInputGroup button {
+  background-color: #007AFF;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  margin-top: 5px;
+  transition: 0.2s;
+}
+
+.ModalInputGroup button:hover {
+  background-color: #0062cc;
+}
+
+/* 5. 任务卡片样式 */
+.TodoListWrapper {
+  flex: 1;
+  overflow-y: visible; /* 关键：改为 visible，防止切掉顶部阴影 */
+  overflow-x: hidden;
+  padding: 12px 4px;   /* 增加内边距，给阴影留位 */
+  margin: 0 -4px;      /* 抵消内边距 */
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.TodoItemCard {
+  background: #fff;
+  border: 1px solid #f0f0f0;
+  border-radius: 14px;
+  position: relative; /* 必须，为了 z-index 生效 */
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 当卡片获得焦点或悬浮时，提升层级并显示完整蓝色边框 */
+.TodoItemCard:hover,
+.TodoItemCard:focus-within {
+  border-color: #007AFF;
+  box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.1); /* 使用内阴影代替外溢 */
+  z-index: 2; /* 确保它盖在邻近卡片之上，不被切断线条 */
+  transform: translateY(-1px);
+}
+
+.TodoText {
+  flex: 1;
+  margin: 0 12px;
+}
+
+.ItemTitle {
+  font-weight: 700;
+  font-size: 16px;
+  margin-bottom: 4px;
+}
+
+.ItemContent {
+  font-size: 13px;
+  color: #888;
+}
+
+.ItemDelBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  opacity: 0.2;
+  font-size: 16px;
+}
+
+.TodoItemCard:hover .ItemDelBtn {
+  opacity: 1;
+  color: #ff4d4f;
+}
+
+/* 已完成样式 */
+.is-completed {
+  background: #f9f9f9;
+  border-color: transparent;
+}
+
+.is-completed .ItemTitle,
+.is-completed .ItemContent {
+  text-decoration: line-through;
+  color: #ccc;
+}
+
+/* --- 重构后的 Item 样式 --- */
+.TodoItemCard {
+  background: #fff;
+  border: 1px solid #f0f0f0;
+  padding: 16px;
+  border-radius: 16px;
+  display: flex;
+  justify-content: space-between; /* 左右分布 */
+  align-items: center;
+  margin-bottom: 12px;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+}
+
+.TodoItemCard:hover {
+  border-color: #007AFF;
+  box-shadow: 0 4px 12px rgba(0, 122, 255, 0.08);
+  transform: translateY(-2px);
+}
+
+.TodoText {
+  flex: 1; /* 占据剩余空间 */
+  margin-right: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* 操作按钮组 */
+.ActionGroup {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* 按钮之间的间距 */
+}
+
+/* 完成按钮 (圆形) */
+.CheckBtn {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid #e0e0e0;
+  background: white;
+  color: transparent; /* 默认不显示勾选 */
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 0;
+}
+
+.CheckBtn:hover {
+  border-color: #007AFF;
+  background: #f0f7ff;
+}
+
+/* 选中状态 */
+.CheckBtn.checked {
+  background: #34c759; /* iOS 绿色 */
+  border-color: #34c759;
+  color: white; /* 显示勾选 */
+  transform: scale(1.1);
+}
+
+/* 删除按钮 */
+.ItemDelBtn {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  color: #999;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.2s;
+}
+
+.ItemDelBtn:hover {
+  background: #fff1f0;
+  color: #ff4d4f;
+}
+
+/* 已完成的文字样式 */
+.is-completed .ItemTitle,
+.is-completed .ItemContent {
+  color: #c7c7cc;
+  text-decoration: line-through;
+}
+
+/* 针对可编辑文字的全局优化 */
+[contenteditable="true"] {
+  outline: none; /* 彻底移除那个丑陋的黑色框 */
+  padding: 2px 4px;
+  margin: -2px -4px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+}
+
+/* 当用户点击开始编辑时，给予一个微弱的背景色提示 */
+[contenteditable="true"]:focus {
+  background-color: rgba(0, 122, 255, 0.05); /* 极淡的蓝色背景 */
+  border-bottom: 1px solid rgba(0, 122, 255, 0.3); /* 只在底部显示一条细线 */
+}
+
+/* 标题在编辑时稍微加粗，强化重点 */
+.ItemTitle:focus {
+  color: #007AFF;
+}

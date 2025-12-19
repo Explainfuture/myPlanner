@@ -1,0 +1,41 @@
+/* 列表容器 */
+.TodoListWrapper {
+  overflow-y: auto;
+  flex: 1;
+  /* 关键修改：增加内边距，防止子元素的 box-shadow 或 border 被切掉 */
+  padding: 5px; 
+  /* 抵消 padding 带来的视觉缩进，保持对齐（可选，视具体布局而定） */
+  margin: 0 -5px; 
+}
+
+.TodoItemCard:hover,
+.TodoItemCard:focus-within {
+  z-index: 10;
+  position: relative;
+}
+
+/* 正在拖拽中的样式 */
+.DraggableItem.dragging {
+  transform: scale(1.02);
+  box-shadow: 0 15px 30px rgba(0, 122, 255, 0.15);
+}
+
+/* 已完成任务的分割线 */
+.CompletedSeparator {
+  margin: 30px 0 15px;
+  display: flex;
+  align-items: center;
+  color: #bdc3c7;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.CompletedSeparator::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: #eee;
+  margin-left: 15px;
+}
+
+/* 这里的 TodoItemCard 样式引用自之前的定义 */

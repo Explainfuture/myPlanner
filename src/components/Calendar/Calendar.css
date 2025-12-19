@@ -1,0 +1,339 @@
+/* Calendar.css */
+
+/* 1. 日历外层容器：给它一个白色背景和圆角 */
+.CalendarContainer {
+  max-width: 900px;
+  margin: 40px auto;
+  background: #ffffff; /* 确保是白色 */
+  border-radius: 24px;
+  padding: 40px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.08); /* 加上高级感阴影 */
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+/* 2. 头部区域：让年份文字和下拉框左右分开 */
+.CalendarHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  padding: 0 10px;
+}
+
+.HeaderTitle {
+  font-size: 28px;
+  font-weight: 800;
+  color: #1a1a1a;
+}
+
+/* 3. 下拉框美化 */
+.HeaderControls {
+  display: flex;
+  gap: 10px;
+}
+
+.HeaderControls select {
+  padding: 8px 16px;
+  font-size: 16px;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  background-color: #f9f9f9;
+  cursor: pointer;
+  outline: none;
+  font-weight: 500;
+  color: #333;
+  transition: 0.2s;
+}
+
+.HeaderControls select:hover {
+  background-color: #eee;
+}
+
+/* 4. 星期表头 */
+.CalendarGrid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 15px; /* 格子之间的间距 */
+}
+
+.WeekLabel {
+  text-align: center;
+  font-weight: 700;
+  color: #bdc3c7;
+  padding-bottom: 15px;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* 5. 日期格子 (对应 DateCell.js) */
+.DateCell {
+  aspect-ratio: 1 / 1;
+  background: #f8f9fa; /* 默认浅灰背景 */
+  border-radius: 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+  font-weight: 600;
+  font-size: 18px;
+  color: #555;
+  transition: all 0.2s ease;
+}
+
+/* 鼠标放上去的效果 */
+.DateCell:hover {
+  background: #fff;
+  color: #007AFF;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+  transform: translateY(-3px);
+  z-index: 10;
+}
+
+/* 空格子 */
+.DateCell.empty {
+  background: transparent;
+  cursor: default;
+  pointer-events: none;
+}
+
+/* 任务小圆点 */
+.Dot {
+  width: 6px;
+  height: 6px;
+  background-color: #007AFF;
+  border-radius: 50%;
+  position: absolute;
+  bottom: 15px;
+}
+
+/* --- 下拉框高级美化 --- */
+.HeaderControls {
+  display: flex;
+  gap: 12px;
+}
+
+.SelectWrapper {
+  position: relative;
+  display: inline-block;
+}
+
+/* 隐藏原生下拉箭头，重写外观 */
+.HeaderControls select {
+  appearance: none; /* 关键：抹除原生样式 */
+  -webkit-appearance: none;
+  background-color: #f2f2f7;
+  border: 1px solid transparent;
+  padding: 8px 36px 8px 16px; /* 右侧留出空间给箭头 */
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: 10px;
+  color: #1c1c1e;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.HeaderControls select:hover {
+  background-color: #e5e5ea;
+  transform: translateY(-1px);
+}
+
+.HeaderControls select:focus {
+  outline: none;
+  border-color: #007AFF;
+  background-color: #fff;
+  box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.1);
+}
+
+/* 自定义一个小箭头 (由于 select 是替换元素，这里我们要用父级伪元素或者背景图) 
+   更简单的方案是给 select 加一个 SVG 背景箭头 */
+.HeaderControls select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23333' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  background-size: 16px;
+}
+
+/* Calendar.css 追加内容 */
+
+/* --- 自定义下拉框容器 --- */
+.CustomSelect {
+  position: relative; /* 关键：为了让下拉列表绝对定位 */
+  min-width: 100px;
+  user-select: none;
+}
+
+/* 触发按钮 */
+.SelectTrigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #f2f2f7;
+  padding: 8px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+  color: #1c1c1e;
+  transition: all 0.2s;
+  border: 1px solid transparent;
+}
+
+.SelectTrigger:hover {
+  background: #e5e5ea;
+}
+
+/* 箭头动画 */
+.ArrowIcon {
+  margin-left: 8px;
+  color: #8e8e93;
+  transition: transform 0.3s ease;
+}
+.ArrowIcon.open {
+  transform: rotate(180deg);
+}
+
+/* 下拉选项列表 (浮层) */
+.SelectOptions {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 160px;
+  background: rgba(255, 255, 255, 0.85); /* 半透明背景 */
+  backdrop-filter: blur(20px) saturate(180%); /* 毛玻璃效果 */
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+  padding: 6px;
+  z-index: 2000;
+  animation: menuAppear 0.2s ease-out;
+}
+
+@keyframes menuAppear {
+  from { opacity: 0; transform: translateY(-8px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* 滚动条美化 */
+.SelectOptions::-webkit-scrollbar {
+  width: 6px;
+}
+.SelectOptions::-webkit-scrollbar-thumb {
+  background-color: rgba(0,0,0,0.1);
+  border-radius: 3px;
+}
+
+/* 1. 基础选项样式：增加左右内边距，让文字更有呼吸感 */
+.OptionItem {
+  padding: 10px 14px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #48484a; /* 稍微淡一点的黑色，更高级 */
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+}
+
+/* 2. 悬浮态：使用淡蓝色背景，不改变文字颜色，保持柔和 */
+.OptionItem:hover {
+  background-color: #f2f2f7; 
+  color: #007AFF;
+}
+
+/* 3. 选中态：去掉勾后的新表现 */
+.OptionItem.selected {
+  background-color: rgba(0, 122, 255, 0.1); /* 浅蓝色背景块 */
+  color: #007AFF; /* 文字变深蓝 */
+  font-weight: 700; /* 文字加粗，一眼就能看出选的是谁 */
+}
+
+/* 4. 如果你想让选中的项在鼠标移上去时更有动感 */
+.OptionItem.selected:hover {
+  background-color: #007AFF;
+  color: #ffffff;
+}
+
+/* 选中项在 hover 状态下的修正 */
+.OptionItem.selected:hover {
+  background-color: #007AFF;
+  color: white;
+}
+
+/* 滚动菜单容器 */
+.ScrollMenuContainer {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: 120px;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(25px) saturate(180%);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  overflow: hidden; /* 隐藏内部滚动溢出 */
+  animation: menuScaleIn 0.2s cubic-bezier(0.2, 0, 0.2, 1);
+}
+
+@keyframes menuScaleIn {
+  from { opacity: 0; transform: scale(0.9) translateY(-10px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* 滚动列表主体 */
+.ScrollList {
+  max-height: 200px; /* 固定高度，形成滚轮感 */
+  overflow-y: auto;
+  scroll-behavior: smooth;
+  padding: 40px 0; /* 上下留白，配合遮罩效果更好 */
+  scrollbar-width: none; /* 隐藏滚动条 */
+}
+.ScrollList::-webkit-scrollbar { display: none; }
+
+/* 单个滚动项 */
+.ScrollOptionItem {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  color: #8e8e93;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-weight: 500;
+}
+
+.ScrollOptionItem:hover {
+  color: #007AFF;
+  background: rgba(0, 122, 255, 0.05);
+}
+
+/* 选中项：加粗、变色、放大 */
+.ScrollOptionItem.selected {
+  color: #007AFF;
+  font-size: 17px;
+  font-weight: 700;
+  background: rgba(0, 122, 255, 0.08);
+}
+
+/* 渐变遮罩：营造滚轮消失在边缘的视觉效果 */
+.MenuGradient {
+  position: absolute;
+  left: 0; right: 0; height: 40px;
+  z-index: 2;
+  pointer-events: none;
+}
+.MenuGradient.top {
+  top: 0;
+  background: linear-gradient(to bottom, rgba(255,255,255,1), rgba(255,255,255,0));
+}
+.MenuGradient.bottom {
+  bottom: 0;
+  background: linear-gradient(to top, rgba(255,255,255,1), rgba(255,255,255,0));
+}
