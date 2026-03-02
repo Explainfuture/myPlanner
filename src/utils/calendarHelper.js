@@ -4,8 +4,6 @@
  * @param {number} month (0-11)
  * @returns {Array} 包含日期对象的数组
  */
-import React from 'react'
-
 export const generateMonthDays = (year,month) => {
     //getDay方法，获取1号是周几
     const firstDayOfMonth = new Date(year,month,1).getDay()
