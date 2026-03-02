@@ -130,6 +130,14 @@ export default function TodoModal({ dateKey, todos, onClose, onUpdate, aiAdvice,
               {loading ? '⏳ 正在构建方案...' : '✨ 安排今日任务'}
             </button>
           </div>
+          <button
+            type="button"
+            className="ModalCloseBtn"
+            onClick={onClose}
+            aria-label="关闭任务弹窗"
+          >
+            ✕
+          </button>
         </div>
 
         <div className="ModalMainBody">
