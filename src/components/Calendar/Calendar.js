@@ -7,7 +7,10 @@ import './Calendar.css'
 export default function Calendar( {viewDate, setViewDate, allData, onDateClick} ) {
   const days = generateMonthDays(viewDate.year,viewDate.month)
   const weekLabels = ['Mon','Tue','Wen','Thu','Fri','Sat','Sun']
-  
+  // 当前日期的字符串，格式与 item.dateString 一致（用于高亮“今天”）
+  const now = new Date()
+  const todayString = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`
+
     return (
     <div className='CalendarContainer'>
         <CalendarHeader viewDate = {viewDate} setViewDate = {setViewDate}></CalendarHeader>
@@ -23,6 +26,7 @@ export default function Calendar( {viewDate, setViewDate, allData, onDateClick} 
             key={index}
             item={item}
             hasTodos={allData[item.dateString]?.length > 0}
+            isToday={item.dateString === todayString}
             onClick={() => item.type === 'current' && onDateClick(item.dateString)}
           />
         ))}
